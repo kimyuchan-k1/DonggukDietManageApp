@@ -15,19 +15,38 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import java.lang.reflect.Modifier
-
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.mobilesoftwareproject.ui.screens.AnalysisScreen
+import com.example.mobilesoftwareproject.ui.screens.DetailScreen
+import com.example.mobilesoftwareproject.ui.screens.FoodListScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            hello()
+            FoodListScreen() // FoodListScreen 호출
         }
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun hello() {
-    print("hello")
+fun PreviewFoodListScreen() {
+    FoodListScreen()
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetailScreen() {
+    DetailScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewAnalysisScreen() {
+    AnalysisScreen()
+}
+
+
+
