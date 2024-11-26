@@ -1,12 +1,39 @@
 package com.example.mobilesoftwareproject.ui.theme
 
+import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.mobilesoftwareproject.R
 
-// Set of Material typography styles to start with
+// Custom Font Family
+val customFontFamily = FontFamily(
+    Font(R.font.esamanrumedium, FontWeight.Normal),
+    Font(R.font.esamanrulight, FontWeight.Thin),
+    Font(R.font.esamanrubold, FontWeight.Bold),
+)
+
+// Custom Typography
+val customTypography = Typography(
+    headlineLarge = TextStyle(
+        fontFamily = customFontFamily,
+        fontWeight = FontWeight.Bold,
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = customFontFamily,
+        fontWeight = FontWeight.Normal,
+    ),
+    bodySmall = TextStyle(
+        fontFamily = customFontFamily,
+        fontWeight = FontWeight.Thin,
+    )
+)
+
+//// Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -14,7 +41,10 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
+    ),
+
+
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
