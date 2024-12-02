@@ -16,7 +16,7 @@ class ItemViewModel : ViewModel() {
             price = 5500,
             date = "2024-01-15",
             type = "중식",
-            imageRes = R.drawable.ic_launcher_background,
+            imageRes = R.drawable.kimchi,
             review = "오늘 김치찌개는 굉장히 맛있었습니다.",
             calories = 650,
             sideDishes = listOf("계란말이", "무나물", "김")
@@ -28,7 +28,7 @@ class ItemViewModel : ViewModel() {
             price = 3000,
             date = "2024-01-15",
             type = "간식/음료",
-            imageRes = R.drawable.ic_launcher_background,
+            imageRes = R.drawable.americano,
             review = "적당한 산미와 깔끔한 맛",
             calories = 5,
             sideDishes = emptyList()

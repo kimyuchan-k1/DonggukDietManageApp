@@ -2,55 +2,49 @@ package com.example.mobilesoftwareproject.ui.screens
 
 
 
-import InputScreen
-import androidx.compose.foundation.background
+
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.mobilesoftwareproject.R
-import com.example.mobilesoftwareproject.model.Item
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.mobilesoftwareproject.model.MealDao
+import com.example.mobilesoftwareproject.model.MealDatabase
+import com.example.mobilesoftwareproject.repository.MealRepository
 import com.example.mobilesoftwareproject.viewmodel.ItemViewModel
+import com.example.mobilesoftwareproject.viewmodel.MealViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(itemViewModel: ItemViewModel) {
-    val navController = rememberNavController()
-    val bottomNavItems = listOf("input", "view", "analysis")
+fun MainScreen(navController: NavHostController, mealViewModel: MealViewModel) {
+
+
+    val bottomNavItems = listOf("meal_input", "home", "analysis")
 
     Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    val currentRoute = currentRoute(navController)
-                    Text(
-                        text = when (currentRoute) {
-                            "input" -> "급식 입력"
-                            "view" -> "급식 목록"
-                            "analysis" -> "급식 분석"
-                            "detail/{itemId}" -> "상세 정보"
-                            else -> ""
-                        },
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            )
-        },
         bottomBar = {
             NavigationBar {
                 bottomNavItems.forEach { screen ->
                     NavigationBarItem(
+
+
+                        modifier = Modifier.padding(start = 0.dp),
                         selected = currentRoute(navController) == screen,
                         onClick = {
                             navController.navigate(screen) {
@@ -61,24 +55,24 @@ fun MainScreen(itemViewModel: ItemViewModel) {
                         },
                         icon = {
                             when (screen) {
-                                "input" -> Icon(
-                                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                                "meal_input" -> Icon(
+                                    Icons.Rounded.Add,
                                     contentDescription = null
                                 )
-                                "view" -> Icon(
-                                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                                "home" -> Icon(
+                                    Icons.Filled.Home,
                                     contentDescription = null
                                 )
                                 "analysis" -> Icon(
-                                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                                    Icons.Outlined.Menu,
                                     contentDescription = null
                                 )
                             }
                         },
-                        label = {
+                        label =  {
                             when (screen) {
-                                "input" -> Text("입력")
-                                "view" -> Text("목록")
+                                "meal_input" -> Text("음식 입력")
+                                "home" -> Text("음식 목록")
                                 "analysis" -> Text("분석")
                             }
                         }
@@ -90,31 +84,46 @@ fun MainScreen(itemViewModel: ItemViewModel) {
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(
                 navController = navController,
-                startDestination = "view"
+                // 시작 지점
+                startDestination = "home"
             ) {
-                composable("input") {
-                    InputScreen(navController, itemViewModel)
+                composable("meal_input") {
+                    MealInputScreen(navController, mealViewModel)
                 }
-                composable("view") {
-                    ViewScreen(navController, itemViewModel)
+                composable("home") {
+                    ViewScreen(navController, mealViewModel)
                 }
                 composable("analysis") {
-                    AnalysisScreen()
+                    // navController, mealViewModel 을 받자
+                    AnalysisScreen(mealViewModel)
                 }
-                composable("detail/{itemId}") { backStackEntry ->
-                    val itemId = backStackEntry.arguments?.getString("itemId")?.toIntOrNull()
-                    val item = itemViewModel.items.firstOrNull { it.id == itemId }
-                    item?.let {
-                        DetailScreen(navController, it)
+                composable("detail/{mealId}") { backStackEntry ->
+                    val mealId = backStackEntry.arguments?.getString("mealId")?.toIntOrNull() ?: 0
+                    DetailScreen(navController, mealId, mealViewModel)
                     }
                 }
             }
         }
     }
-}
 
 @Composable
 fun currentRoute(navController: NavHostController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     return navBackStackEntry?.destination?.route
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun MainScreenPreview() {
+    //viewmodel
+    val applicatinContext = LocalContext.current
+    val navController = rememberNavController()
+    val mealDao = MealDatabase.getDatabase(applicatinContext).MealDao()
+    val mealRepository = MealRepository(mealDao)
+
+
+    val mealViewModel  = MealViewModel(mealRepository)
+    MainScreen(navController, mealViewModel)
+
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id ("kotlin-kapt") // kapt 플러그인 추가
 }
 
 android {
@@ -50,16 +51,35 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
 
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+//    ksp("androidx.room:room-compiler:2.5.0")
+    // coil - image
+    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+
+    //meterial3
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha04")
     //
+
     val nav_version = "2.8.0"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation ("androidx.compose.ui:ui:1.5.0")
     implementation ("androidx.compose.material:material:1.5.0")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.5.0")
-    implementation ("androidx.navigation:navigation-compose:2.7.2")
-    implementation ("androidx.compose.runtime:runtime:1.5.0")
+    //livedata
+    implementation ("androidx.compose.runtime:runtime-livedata:1.5.0")
 
+    implementation ("androidx.compose.runtime:runtime:1.5.0")
+    // ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
