@@ -60,18 +60,9 @@ fun AnalysisScreen(mealViewModel: MealViewModel) {
 // 분석 데이터 클래스
 data class MealAnalysisData(
     var totalCalories: Int = 0,
-    var costByMealType: Map<String, Int> = emptyMap()
+    var costByMealType: Map<String, Int> = emptyMap(),
+    var totalCost: Int = 0,
+    var percentageByMealType: Map<String, Float> = emptyMap()
 )
 
-fun getStartOfMonth(): Date {
-    val calendar = Calendar.getInstance()
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
-    return calendar.time
-}
-
-fun getEndOfMonth(): Date {
-    val calendar = Calendar.getInstance()
-    calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-    return calendar.time
-}
 

@@ -1,59 +1,51 @@
 package com.example.mobilesoftwareproject.ui.screens
 
+
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
-
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.rememberAsyncImagePainter
-import com.example.mobilesoftwareproject.model.Meal
-import com.example.mobilesoftwareproject.viewmodel.MealViewModel
-
+import androidx.navigation.NavController
+import com.example.mobilesoftwareproject.R
+import com.example.mobilesoftwareproject.model.Item
 
 @Composable
-fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealViewModel) {
-    var meal by remember { mutableStateOf<Meal?>(null) }
+fun DetailScreenUi(navController: NavController, item: Item) {
 
 
-    LaunchedEffect(mealId) {
-        mealViewModel.getById(mealId,
-            onResult = { meal = it }
-        )
-    }
+    // 반찬 데이터 입력받기
+    val sidedish: String = item.sideDishes
 
 
-
-
-    meal?.let { mealData ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            TopBarDetail(navController)
-            Spacer(modifier = Modifier.height(16.dp))
 
+            TopBar3(navController)
+            Spacer(modifier = Modifier.height(16.dp))
 
             // 이미지
             Box(
@@ -64,7 +56,7 @@ fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealV
                 contentAlignment = Alignment.BottomEnd
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(mealData.PhotoUri),
+                    painter = painterResource(id = item.imageRes),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -91,14 +83,14 @@ fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealV
                     ) {
                         Column {
                             Text(
-                                text = mealData.foodName,
+                                text = item.name,
                                 style = TextStyle(
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             )
                             Text(
-                                text = mealData.Location,
+                                text = item.location,
                                 style = TextStyle(fontSize = 14.sp, color = Color.Gray)
                             )
                         }
@@ -108,7 +100,7 @@ fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealV
                                 style = TextStyle(fontSize = 12.sp, color = Color.Gray)
                             )
                             Text(
-                                text = "${mealData.price}",
+                                text = "${item.price}",
                                 style = TextStyle(
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold,
@@ -131,7 +123,7 @@ fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealV
                                 style = TextStyle(fontSize = 14.sp, color = Color.Gray)
                             )
                             Text(
-                                text = mealData.mealType,
+                                text = item.type,
                                 style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             )
                         }
@@ -141,7 +133,7 @@ fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealV
                                 style = TextStyle(fontSize = 14.sp, color = Color.Gray)
                             )
                             Text(
-                                text = "${mealData.calories} 칼로리",
+                                text = "${item.calories} kcal",
                                 style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             )
                         }
@@ -160,9 +152,9 @@ fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealV
                                 text = "반찬",
                                 style = TextStyle(fontSize = 14.sp, color = Color.Gray)
                             )
-                            // 반찬이 있으면 반찬이름 넣고 없으면 없음 표시
+                            // 반찬 있으면
                             Text(
-                                text = mealData.sideDishNames?: "없음", // 반찬 데이터 넣기
+                                text = "없음", // 반찬 데이터 넣기
                                 style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             )
                         }
@@ -189,75 +181,37 @@ fun DetailScreen(navController: NavController, mealId: Int, mealViewModel: MealV
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
-                    text = mealData.review?: "리뷰가 없습니다.",
+                    text = item.review,
                     style = TextStyle(fontSize = 14.sp),
                     modifier = Modifier.padding(16.dp)
                 )
             }
         }
-            /*Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.Gray),
-                contentAlignment = Alignment.BottomEnd
-            ) {
-                Image(
-                    painter = rememberAsyncImagePainter(mealData.PhotoUri),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
-                Text(
-                    text = "크게 보기",
-                    color = Color.White,
-                    modifier = Modifier
-                        .background(Color.Black.copy(alpha = 0.6F), RoundedCornerShape(16.dp))
-                        .padding(horizontal = 12.dp, vertical = 4.dp)
-                        .align(Alignment.BottomEnd)
-                        .padding(8.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 상세 정보 표시
-            Text(text = "음식 이름: ${mealData.foodName}", fontSize = 18.sp)
-            Text(text = "반찬: ${mealData.sideDishNames}", fontSize = 16.sp)
-            Text(text = "가격: ${mealData.price} 원", fontSize = 16.sp)
-            Text(text = "칼로리: ${mealData.calories} kcal", fontSize = 16.sp)
-            Text(text = "식사 종류: ${mealData.mealType}", fontSize = 16.sp)
-            Text(text = "장소: ${mealData.Location}", fontSize = 16.sp)
-            Text(text = "날짜: ${formatDate(mealData.date)}", fontSize = 16.sp)
-            Text(text = "리뷰: ${mealData.review}", fontSize = 16.sp)*/
-    } ?: run {
-        // 로딩 또는 에러 처리
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "데이터를 불러오는 중입니다...",
-                style = TextStyle(fontSize = 16.sp),
-                color = Color.Black,
-                modifier = Modifier.padding(16.dp))
-        }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailScreenPreview() {
+    val item = Item(
+        id = 1,
+        imageRes = R.drawable.kimchi,
+        name = "김치찌개",
+        location = "상록원 2층",
+        type = "중식",
+        price = 55000,
+        date = "2023-12-03",
+        calories = 600,
+        sideDishes = "계란말이",
+        review = "맛있어요"
+    )
+    DetailScreenUi(navController = NavController(LocalContext.current), item = item)
+
 }
 
 
 @Composable
-fun TagItem(tag: String) {
-    Box(
-        modifier = Modifier
-            .background(Color(0xFFEEEEEE), RoundedCornerShape(16.dp))
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-    ) {
-        Text(text = tag, fontSize = 12.sp, color = Color.Black)
-    }
-}
-
-@Composable
-fun TopBarDetail(navController: NavController) {
+fun TopBar3(navController: NavController) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
@@ -285,13 +239,5 @@ fun TopBarDetail(navController: NavController) {
         )
 
     }
-}
-
-
-
-
-@Preview
-@Composable
-fun PreviewDetailScreen() {
 
 }

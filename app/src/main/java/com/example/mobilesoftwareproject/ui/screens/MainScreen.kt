@@ -71,8 +71,8 @@ fun MainScreen(navController: NavHostController, mealViewModel: MealViewModel) {
                         },
                         label =  {
                             when (screen) {
-                                "meal_input" -> Text("음식 입력")
-                                "home" -> Text("음식 목록")
+                                "meal_input" -> Text("입력")
+                                "home" -> Text("메인 페이지")
                                 "analysis" -> Text("분석")
                             }
                         }
@@ -95,7 +95,8 @@ fun MainScreen(navController: NavHostController, mealViewModel: MealViewModel) {
                 }
                 composable("analysis") {
                     // navController, mealViewModel 을 받자
-                    AnalysisScreen(mealViewModel)
+                    CaloriesScreen(mealViewModel)
+//                    AnalysisScreen(mealviewModel)
                 }
                 composable("detail/{mealId}") { backStackEntry ->
                     val mealId = backStackEntry.arguments?.getString("mealId")?.toIntOrNull() ?: 0

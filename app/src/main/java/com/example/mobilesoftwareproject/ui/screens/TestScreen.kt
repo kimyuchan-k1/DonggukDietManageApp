@@ -134,7 +134,7 @@ fun ViewSection(onSelectItem: (Item) -> Unit) {
             imageRes = R.drawable.ic_launcher_background,
             review = "굉장히 맛있었습니다.",
             calories = 650,
-            sideDishes = listOf("계란말이", "무나물", "김")
+            sideDishes = "계란말이"
         )
     )
     Column(

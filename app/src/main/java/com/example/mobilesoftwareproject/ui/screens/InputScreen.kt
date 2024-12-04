@@ -224,7 +224,6 @@ fun LocationExposedDropdownMenu() {
             },
             modifier = Modifier
                 .fillMaxWidth()
-            // ExposedDropdownMenuBox 내부에서는 menuAnchor를 사용해야 합니다.
         )
         ExposedDropdownMenu(
             expanded = expanded,

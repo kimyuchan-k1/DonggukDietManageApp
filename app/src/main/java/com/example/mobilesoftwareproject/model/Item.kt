@@ -11,7 +11,7 @@ data class Item(
     val imageRes: Int,
     val review: String,
     val calories: Int,
-    val sideDishes: List<String>
+    val sideDishes: String
 )
 
 
