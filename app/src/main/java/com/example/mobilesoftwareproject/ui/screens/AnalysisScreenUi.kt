@@ -1,6 +1,7 @@
 package com.example.mobilesoftwareproject.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
@@ -38,8 +39,8 @@ fun CaloriesScreen(mealViewModel: MealViewModel) {
 
     LaunchedEffect(Unit) {
         val currentMonthMeals = mealViewModel.getMealsByDateRange(
-            getStartOfMonth(),
-            getEndOfMonth()
+            getRecentMonth(),
+            getTodayOfMonth()
         )
         val totalCalories = currentMonthMeals.sumOf { it.calories ?: 0 }
         val costByMealType = currentMonthMeals.groupBy { it.mealType }.mapValues { entry ->
@@ -100,10 +101,11 @@ fun CaloriesScreen(mealViewModel: MealViewModel) {
                         Color(0xFFFF8A65),
                         Color(0xFF64B5F6)
                     ),
-                    centerTextSmall = "전체 칼로리",
-                    centerTextLarge = "${analysisData.totalCalories}",
+                    centerTextSmall = "전체 비용",
+                    centerTextLarge = "${analysisData.totalCost}",
                     strokeWidth = 90f
                 )
+                typeCard(modifier = Modifier)
 
                 Spacer(modifier = Modifier.height(16.dp))
                 HorizontalDivider(color = Color.Gray, thickness = 1.dp)
@@ -207,7 +209,7 @@ fun BreakdownTable(headers: List<String>, rows: List<List<String>>) {
                 .padding(vertical = 5.dp), // 각 행 위아래 간격 추가
                 horizontalArrangement = Arrangement.SpaceBetween) {
                 row.forEach { cell ->
-                    Text(text = cell, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                    Text(text = cell, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.Black, modifier = Modifier.weight(1f))
                 }
             }
         }
@@ -227,7 +229,7 @@ fun SummarySection(totalCalories: String, totalCost: String) {
         Spacer(modifier =Modifier.height(2.dp))
 
         Text(
-            text = " 월간 총 비용: $totalCost",
+            text = "월간 총 비용: $totalCost",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
@@ -253,16 +255,129 @@ fun TopBar2() {
 }
 
 
-// 시작 날짜
-fun getStartOfMonth(): Date {
+
+//// 시작 날짜
+//fun getStartOfMonth(): Date {
+//    val calendar = Calendar.getInstance()
+//    calendar.set(Calendar.DAY_OF_MONTH, 1)
+//    return calendar.time
+//}
+
+// 오늘 날짜 구하기
+fun getTodayOfMonth() : Date {
     val calendar = Calendar.getInstance()
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
+    println(calendar)
+    Log.d("오늘 날짜", calendar.time.toString())
     return calendar.time
 }
 
-// 끝나는 날짜
+// 오늘로 부터 30일전 즉, 한 달 전 날짜
+fun getRecentMonth() : Date {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_MONTH, -30)
+    Log.d("한달 전 날짜",calendar.time.toString())
+    return calendar.time
+}
+
+/*
+
 fun getEndOfMonth(): Date {
     val calendar = Calendar.getInstance()
     calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
     return calendar.time
+}
+*/
+
+
+@Composable
+fun typeCard(modifier: Modifier = Modifier) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column( // 수직으로 정렬
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center, // 전체 중앙 정렬
+            horizontalAlignment = Alignment.CenterHorizontally // 가로 중앙 정렬
+        ) {
+// 첫 번째 박스
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .height(10.dp)
+                        .width(20.dp)
+                        .background(Color(0xFF9575CD))
+                )
+                Text(
+                    text = "조식",
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp)) // 박스 사이 간격
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .height(10.dp)
+                            .width(20.dp)
+                            .background(Color(0xFFFFB74D)) // 빨간색 박스
+                    )
+                    Text(
+                        text = "중식",
+
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+            }
+
+
+
+            Spacer(modifier = Modifier.height(1.dp)) // 박스 사이 간격
+
+            // 세 번째 박스
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .height(10.dp)
+                        .width(20.dp)
+                        .background(Color(0xFFFF8A65)) // 빨간색 박스
+                )
+                Text(
+                    text = "석식",
+
+
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+
+                Spacer(modifier =Modifier.width(8.dp))
+
+                Box(
+                    modifier = Modifier
+                        .height(10.dp)
+                        .width(20.dp)
+                        .background(Color(0xFF64B5F6)) // 빨간색 박스
+                )
+                Text(
+                    text = "간식/음료",
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+
+        }
+
+    }
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    typeCard()
 }
