@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.MobileSoftwareProject" parent="android:Theme.Material.Light.NoActionBar" />
+
+
+    <!-- 모든 API 레벨에서 적용되는 Splash 테마 기본 정의 -->
+    <style name="Theme.App.Splash" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- 최소한의 스플래시 백그라운드와 아이콘을 지정 -->
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo_grayscale</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <!-- 애니메이션 지속 시간이나 Branding Image 등의 속성을 여기서 생략해도 기본적으로 동작 가능 -->
+    </style>
 </resources>

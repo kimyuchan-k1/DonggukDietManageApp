@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.Splash" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- 스플래시 백그라운드 색상 -->
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+
+        <!-- 스플래시 로고 이미지 (벡터, PNG, Mipmap 등 가능) -->
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo_grayscale</item>
+
+        <!-- 스플래시 애니메이션 지속 시간 (밀리초 단위) -->
+        <item name="android:windowSplashScreenAnimationDuration">2000</item>
+
+        <!-- 추가로 브랜드 이미지나 텍스트를 하단에 넣을 수도 있습니다. -->
+        <!-- <item name="android:windowSplashScreenBrandingImage">@drawable/my_branding</item> -->
+    </style>
+
+</resources>

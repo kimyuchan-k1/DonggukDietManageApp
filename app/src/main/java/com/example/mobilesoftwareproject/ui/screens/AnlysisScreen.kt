@@ -22,8 +22,8 @@ fun AnalysisScreen(mealViewModel: MealViewModel) {
 
     LaunchedEffect(Unit) {
         val currentMonthMeals = mealViewModel.getMealsByDateRange(
-            getStartOfMonth(),
-            getEndOfMonth()
+            getRecentMonth(),
+            getTodayOfMonth()
         )
         val totalCalories = currentMonthMeals.sumOf { it.calories ?: 0 }
         val costByMealType = currentMonthMeals.groupBy { it.mealType }.mapValues { entry ->

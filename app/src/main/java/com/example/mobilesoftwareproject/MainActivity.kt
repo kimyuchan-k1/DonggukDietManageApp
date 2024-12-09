@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
@@ -23,6 +24,9 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var mealViewModel: MealViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
+        //splashScreen 추가
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         val mealDao = MealDatabase.getDatabase(applicationContext).MealDao()
         val mealRepository = MealRepository(mealDao)
@@ -31,9 +35,9 @@ class MainActivity : ComponentActivity() {
         mealViewModel  = MealViewModel(mealRepository)
         setContent {
             val navController = rememberNavController()
-            AppTheme {
+//            AppTheme {
                 MainScreen(navController, mealViewModel)
-            }
+//            }
         }
     }
 }
